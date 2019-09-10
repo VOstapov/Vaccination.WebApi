@@ -18,17 +18,22 @@ namespace Vaccination.WebApi.Controllers
     {
         private readonly IService<PatientDto> patientService;
         private readonly IService<VaccineDto> vaccineService;
+        private readonly ISearchService searchService;
 
-        public PatientController(IService<PatientDto> patientService, IService<VaccineDto> vaccineService)
+        public PatientController(
+            IService<PatientDto> patientService,
+            IService<VaccineDto> vaccineService,
+            ISearchService searchService)
         {
             this.patientService = patientService;
             this.vaccineService = vaccineService;
+            this.searchService = searchService;
         }
 
         [HttpGet]
-        public async Task<ActionResult> Get()
+        public async Task<ActionResult> Get([FromQuery]string searchString = "")
         {
-            var res = await patientService.GetAllAsync();
+            var res = await searchService.FindPatientsAsync(searchString);
             return Ok(res);
         }
 
