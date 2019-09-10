@@ -20,6 +20,8 @@ namespace Vaccination.Domain.Models.DTO
         [DateValidation]
         public DateTime Date { get; set; }
 
+        [Required]
+        [Range(1, int.MaxValue)]
         public int PatientId { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace Vaccination.Domain.Contracts
 
         Task<TDto> AddAsync(TDto dto);
 
-        Task<TDto> UpdateAsync(TDto dto);
+        Task<TDto> UpdateAsync(TDto dto, Expression<Func<TDto, bool>> predicate);
 
-        Task DeleteAsync(Expression<Func<TDto, bool>> predicate);
+        Task<TDto> DeleteAsync(Expression<Func<TDto, bool>> predicate);
     }
 }

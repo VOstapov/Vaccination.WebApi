@@ -15,7 +15,7 @@ namespace Vaccination.Domain.Contracts
 
         Task<TDomain> GetAsync(Expression<Func<TDomain, bool>> predicate);
 
-        Task DeleteAsync(TDomain domain);
+        Task<TDomain> DeleteAsync(TDomain domain);
 
         Task<TDomain> AddAsync(TDomain domain);
 

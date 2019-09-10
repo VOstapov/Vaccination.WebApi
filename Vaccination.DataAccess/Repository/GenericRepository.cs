@@ -26,10 +26,10 @@ namespace Vaccination.DataAccess.Repository
             return r.Entity;
         }
 
-        public Task DeleteAsync(TDomain domain)
+        public Task<TDomain> DeleteAsync(TDomain domain)
         {
             dbSet.Remove(domain);
-            return Task.CompletedTask;
+            return Task.FromResult(domain);
         }
 
         public async Task<IEnumerable<TDomain>> GetAllAsync()

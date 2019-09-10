@@ -34,17 +34,17 @@ namespace Vaccination.Domain.Services
             return mapper.Map<TDto>(domain);
         }
 
-        public async Task DeleteAsync(Expression<Func<TDto, bool>> predicate)
+        public async Task<TDto> DeleteAsync(Expression<Func<TDto, bool>> predicate)
         {
             var expr = mapper.Map<Expression<Func<TDomain, bool>>>(predicate);
             var domain = await repository.GetAsync(expr);
             if (domain != null)
             {
-                await repository.DeleteAsync(domain).ConfigureAwait(false);
+                domain = await repository.DeleteAsync(domain).ConfigureAwait(false);
                 await unitOfWork.SaveAsync().ConfigureAwait(false);
             }
 
-            // todo: вывести ответ, чтобы можно было вернуть 404
+            return mapper.Map<TDto>(domain);
         }
 
         public async Task<IEnumerable<TDto>> GetAllAsync()
@@ -68,11 +68,17 @@ namespace Vaccination.Domain.Services
             return mapper.Map<TDto>(domain);
         }
 
-        public async Task<TDto> UpdateAsync(TDto dto)
+        public async Task<TDto> UpdateAsync(TDto dto, Expression<Func<TDto, bool>> predicate)
         {
-            var domain = mapper.Map<TDomain>(dto);
-            domain = await repository.UpdateAsync(domain).ConfigureAwait(false);
-            await unitOfWork.SaveAsync().ConfigureAwait(false);
+            var expr = mapper.Map<Expression<Func<TDomain, bool>>>(predicate);
+            var domain = await repository.GetAsync(expr).ConfigureAwait(false);
+
+            if (domain != null)
+            {
+                domain = mapper.Map<TDto, TDomain>(dto, domain);
+                domain = await repository.UpdateAsync(domain).ConfigureAwait(false);
+                await unitOfWork.SaveAsync().ConfigureAwait(false);
+            }
             return mapper.Map<TDto>(domain);
         }
     }

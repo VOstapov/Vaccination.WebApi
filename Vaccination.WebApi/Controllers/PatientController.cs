@@ -41,7 +41,7 @@ namespace Vaccination.WebApi.Controllers
         public async Task<ActionResult> Get(int id)
         {
             var res = await patientService.GetAsync(x => x.Id == id);
-            return Ok(res);
+            return CheckForNullAndReturnOkOrNotFound(res);
         }
 
         [HttpPost]
@@ -54,15 +54,15 @@ namespace Vaccination.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] PatientDto patient)
         {
-            var res = await patientService.UpdateAsync(patient);
-            return Ok(res);
+            var res = await patientService.UpdateAsync(patient, x => x.Id == id);
+            return CheckForNullAndReturnOkOrNotFound(res);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            await patientService.DeleteAsync(x => x.Id == id);
-            return Ok();
+            var res = await patientService.DeleteAsync(x => x.Id == id);
+            return CheckForNullAndReturnOkOrNotFound(res);
         }
 
         [HttpGet("{patientId}/vaccine")]
@@ -76,7 +76,7 @@ namespace Vaccination.WebApi.Controllers
         public async Task<ActionResult> GetVaccine(int patientId, int vaccineId)
         {
             var res = await vaccineService.GetAsync(x => x.PatientId == patientId && x.Id == vaccineId);
-            return Ok(res);
+            return CheckForNullAndReturnOkOrNotFound(res);
         }
 
         [HttpPost("{patientId}/vaccine")]
@@ -90,18 +90,30 @@ namespace Vaccination.WebApi.Controllers
         [HttpPut("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> Put(int patientId, int vaccineId, [FromBody] VaccineDto vaccine)
         {
-            vaccine.PatientId = patientId;
-            vaccine.Id = vaccineId;
-
-            var res = await vaccineService.UpdateAsync(vaccine);
-            return Ok(res);
+            var res = await vaccineService.UpdateAsync(
+                vaccine,
+                x => x.Id == vaccine.Id && x.PatientId == vaccine.PatientId);
+            return CheckForNullAndReturnOkOrNotFound(res);
         }
 
         [HttpDelete("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> Delete(int patientId, int vaccineId)
         {
-            await vaccineService.DeleteAsync(x => x.PatientId == patientId && x.Id == vaccineId);
-            return Ok();
+            var res = await vaccineService.DeleteAsync(x => x.PatientId == patientId && x.Id == vaccineId);
+            return CheckForNullAndReturnOkOrNotFound(res);
+        }
+
+        private ActionResult CheckForNullAndReturnOkOrNotFound(object res)
+        {
+            // По соглашениям rest, если одиночный ресурс был найден
+            // и обработан, вернем ОК.
+            // Если ресурс не найден, то вернем 404.
+            if (res != null)
+            {
+                return Ok(res);
+            }
+
+            return NotFound();
         }
     }
 }
