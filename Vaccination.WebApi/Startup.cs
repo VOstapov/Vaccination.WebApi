@@ -32,10 +32,10 @@ namespace Vaccination.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services
+                // Обработчик ошибок
                 .AddMvc(x => x.Filters.AddService<GlobalExceptionFilter>())
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -46,7 +46,6 @@ namespace Vaccination.WebApi
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddExpressionMapping();
-                //cfg.AddProfile<PatientMapping>();
             },
             new Type[]
             {

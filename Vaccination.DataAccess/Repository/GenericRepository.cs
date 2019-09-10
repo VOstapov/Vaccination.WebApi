@@ -16,7 +16,7 @@ namespace Vaccination.DataAccess.Repository
 
         public GenericRepository(DbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             this.dbSet = dbContext.Set<TDomain>();
         }
 

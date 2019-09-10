@@ -17,7 +17,7 @@ namespace Vaccination.Domain.Services
 
         public SearchService(IService<PatientDto> service)
         {
-            this.service = service;
+            this.service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
         public async Task<IEnumerable<PatientDto>> FindPatientsAsync(string searchString = "")
