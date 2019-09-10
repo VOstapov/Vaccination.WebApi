@@ -35,7 +35,9 @@ namespace Vaccination.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(x => x.Filters.AddService<GlobalExceptionFilter>())
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<VaccinationContext>(options =>
                 options.UseSqlServer(Configuration["Data:ContactContext:ConnectionString"]));
@@ -59,6 +61,8 @@ namespace Vaccination.WebApi
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<GlobalExceptionFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
