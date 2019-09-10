@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vaccination.Domain.Models
+namespace Vaccination.Domain.Models.DTO
 {
-    public class Vaccine
+    public class VaccineDto : BaseModel
     {
-        public int Id { get; set; }
-
         public string Medication { get; set; }
 
         public bool Agreement { get; set; }

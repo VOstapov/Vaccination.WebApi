@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Vaccination.Domain.DTO.Responses
+namespace Vaccination.Domain.Models.DTO
 {
-    public class PatientRS
+    public class PatientDto : BaseModel
     {
-        public int Id { get; set; }
         public string Soname { get; set; }
         public string Name { get; set; }
         public string Patronomic { get; set; }

@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using Vaccination.Domain.DTO.Requests;
-using Vaccination.Domain.DTO.Responses;
 using Vaccination.Domain.Models;
 
 namespace Vaccination.Domain.Contracts
 {
-    public interface IService<TRequest, TDomain, TResponse>
+    public interface IService<TDto>
     {
-        Task<IEnumerable<TResponse>> GetAllAsync();
+        Task<IEnumerable<TDto>> GetAllAsync();
 
-        Task<TResponse> GetAsync(Expression<Func<TDomain, bool>> predicate);
+        Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TDto, bool>> predicate);
 
-        Task<TResponse> AddAsync(TRequest request);
+        Task<TDto> GetAsync(Expression<Func<TDto, bool>> predicate);
 
-        Task<TResponse> UpdateAsync(TRequest request);
+        Task<TDto> AddAsync(TDto dto);
 
-        Task DeleteAsync(Expression<Func<TDomain, bool>> predicate);
+        Task<TDto> UpdateAsync(TDto dto);
+
+        Task DeleteAsync(Expression<Func<TDto, bool>> predicate);
     }
 }

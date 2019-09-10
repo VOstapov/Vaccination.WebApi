@@ -5,7 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Vaccination.Domain.Contracts;
 using Vaccination.Domain.Models;
+using Vaccination.Domain.Models.Domain;
+using Vaccination.Domain.Models.DTO;
 
 namespace Vaccination.WebApi.Controllers
 {
@@ -13,101 +16,86 @@ namespace Vaccination.WebApi.Controllers
     [ApiController]
     public class PatientController : ControllerBase
     {
-        public static List<Patient> list = new List<Patient>()
-            {
-                new Patient()
-                {
-                    Id =0,
-                    Birthday = new DateTime(1990, 1, 1),
-                    Gender = "Мужской",
-                    Name = "Дмитрий",
-                    Patronomic = "Степанович",
-                    Soname = "Тереякин",
-                    Snils = "1231-12312-123123"
-                },
-                new Patient()
-                {
-                    Id =1,
-                    Birthday = new DateTime(1985, 2, 2),
-                    Gender = "Мужской",
-                    Name = "Игорь",
-                    Patronomic = "Николаевич",
-                    Soname = "Снупдогов",
-                    Snils = "6666-77777-459871"
-                }
-            };
+        private readonly IService<PatientDto> patientService;
+        private readonly IService<VaccineDto> vaccineService;
 
-        public static List<Vaccine> vaccines = new List<Vaccine>()
+        public PatientController(IService<PatientDto> patientService, IService<VaccineDto> vaccineService)
         {
-          new Vaccine() { Id = -1, PatientId = -1}
-        };
+            this.patientService = patientService;
+            this.vaccineService = vaccineService;
+        }
 
         [HttpGet]
-        public async Task<IEnumerable<Patient>> Get()
+        public async Task<ActionResult> Get()
         {
-            return list;
+            var res = await patientService.GetAllAsync();
+            return Ok(res);
         }
 
         [HttpGet("{id}")]
-        public async Task<Patient> Get(int id)
+        public async Task<ActionResult> Get(int id)
         {
-            return list.FirstOrDefault(x => x.Id == id);
+            var res = await patientService.GetAsync(x => x.Id == id);
+            return Ok(res);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Patient patient)
+        public async Task<ActionResult> Post([FromBody] PatientDto patient)
         {
-            patient.Id = list.Max(x => x.Id) + 1;
-            list.Add(patient);
-            return Created("", patient);
+            var res = await patientService.AddAsync(patient);
+            return Created($"api/patient/{res.Id}", res);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id,[FromBody] Patient patient)
+        public async Task<ActionResult> Put(int id, [FromBody] PatientDto patient)
         {
-            list[list.FindIndex(x => x.Id == id)] = patient;
-            return Ok(patient);
+            var res = await patientService.UpdateAsync(patient);
+            return Ok(res);
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            list.RemoveAll(x => x.Id == id);
+            await patientService.DeleteAsync(x => x.Id == id);
             return Ok();
         }
 
         [HttpGet("{patientId}/vaccine")]
         public async Task<ActionResult> GetVaccines(int patientId)
         {
-            return Ok(vaccines.Where(x => x.PatientId == patientId));
+            var res = await vaccineService.GetAllAsync(x => x.PatientId == patientId);
+            return Ok(res);
         }
 
         [HttpGet("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> GetVaccine(int patientId, int vaccineId)
         {
-            return Ok(vaccines.FirstOrDefault(x => x.Id == vaccineId && x.PatientId == patientId));
+            var res = await vaccineService.GetAsync(x => x.PatientId == patientId && x.Id == vaccineId);
+            return Ok(res);
         }
 
         [HttpPost("{patientId}/vaccine")]
-        public async Task<ActionResult> AddVaccine(int patientId, [FromBody]Vaccine vaccine)
+        public async Task<ActionResult> AddVaccine(int patientId, [FromBody]VaccineDto vaccine)
         {
-            vaccine.Id = (vaccines?.Max(x => x.Id) ?? 0) + 1;
             vaccine.PatientId = patientId;
-            vaccines.Add(vaccine);
-            return Ok(vaccine);
+            var res = await vaccineService.AddAsync(vaccine);
+            return Created($"/api/patient/{patientId}/vaccine/{res.Id}", res);
         }
 
         [HttpPut("{patientId}/vaccine/{vaccineId}")]
-        public async Task<ActionResult> Put(int patientId, int vaccineId, [FromBody] Vaccine vaccine)
+        public async Task<ActionResult> Put(int patientId, int vaccineId, [FromBody] VaccineDto vaccine)
         {
-            vaccines[vaccines.FindIndex(x => x.Id == vaccineId && x.PatientId == patientId)] = vaccine;
-            return Ok(vaccine);
+            vaccine.PatientId = patientId;
+            vaccine.Id = vaccineId;
+
+            var res = await vaccineService.UpdateAsync(vaccine);
+            return Ok(res);
         }
 
         [HttpDelete("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> Delete(int patientId, int vaccineId)
         {
-            vaccines.RemoveAll(x => x.Id == vaccineId && x.PatientId == patientId);
+            await vaccineService.DeleteAsync(x => x.PatientId == patientId && x.Id == vaccineId);
             return Ok();
         }
     }
