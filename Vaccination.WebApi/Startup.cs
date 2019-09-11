@@ -59,6 +59,8 @@ namespace Vaccination.WebApi
 
             services.AddScoped<IService<PatientDto>, GenericService<Patient, PatientDto>>();
             services.AddScoped<IService<VaccineDto>, GenericService<Vaccine, VaccineDto>>();
+            services.AddScoped<IService<MedicationDto>, GenericService<Medication, MedicationDto>>();
+            services.AddScoped<IService<GenderDto>, GenericService<Gender, GenderDto>>();
             services.AddScoped<ISearchService, SearchService>();
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
