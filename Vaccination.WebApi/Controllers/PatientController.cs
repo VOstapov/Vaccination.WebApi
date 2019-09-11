@@ -25,9 +25,9 @@ namespace Vaccination.WebApi.Controllers
             IService<VaccineDto> vaccineService,
             ISearchService searchService)
         {
-            this.patientService = patientService;
-            this.vaccineService = vaccineService;
-            this.searchService = searchService;
+            this.patientService = patientService ?? throw new ArgumentNullException(nameof(patientService));
+            this.vaccineService = vaccineService ?? throw new ArgumentNullException(nameof(vaccineService));
+            this.searchService = searchService ?? throw new ArgumentNullException(nameof(searchService));
         }
 
         [HttpGet]
