@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vaccination.DataAccess", "V
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vaccination.Common", "Vaccination.Common\Vaccination.Common.csproj", "{5EE05D09-204F-4F63-9AE2-85C32DCEDE68}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xTest", "xTest\xTest.csproj", "{8C81646E-49E4-4C03-B1A5-574E3C9CC22C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5EE05D09-204F-4F63-9AE2-85C32DCEDE68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EE05D09-204F-4F63-9AE2-85C32DCEDE68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EE05D09-204F-4F63-9AE2-85C32DCEDE68}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C81646E-49E4-4C03-B1A5-574E3C9CC22C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C81646E-49E4-4C03-B1A5-574E3C9CC22C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C81646E-49E4-4C03-B1A5-574E3C9CC22C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C81646E-49E4-4C03-B1A5-574E3C9CC22C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
