@@ -1,0 +1,522 @@
+{
+	"info": {
+		"_postman_id": "f80a083a-1f0d-4a44-823e-251472976b41",
+		"name": "vcn_test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Список пациентов",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "193608c2-0d39-4bd3-a9af-d62866f3f0b2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let response = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"results not empty\", () => response.length > 0);",
+							"",
+							"pm.environment.set(\"patientId\", response[0].id);",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/?",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						""
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "112-2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Получение конкретного пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "193608c2-0d39-4bd3-a9af-d62866f3f0b2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}?",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}"
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "112-2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Обновление пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "193608c2-0d39-4bd3-a9af-d62866f3f0b2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"soname\": \"ДОБРОНРАВОВ\",\n    \"name\": \"ЕГОР\",\n    \"patronomic\": \"Петрович\",\n    \"birthday\": \"1988-01-05T00:00:00\",\n    \"gender\": \"Мужской\",\n    \"snils\": \"112-233-445 95\",\n    \"id\": 1\n}"
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}?",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}"
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "112-2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление нового пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "193608c2-0d39-4bd3-a9af-d62866f3f0b2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"let response = JSON.parse(responseBody);",
+							"pm.environment.set(\"patientId\", response.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"soname\": \"Толькочтодобавленный\",\n    \"name\": \"пациент\",\n    \"patronomic\": \"пациентович\",\n    \"birthday\": \"1988-01-05T00:00:00\",\n    \"gender\": \"Мужской\",\n    \"snils\": \"112-233-445 95\"\n}"
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient?",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient"
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "112-2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "193608c2-0d39-4bd3-a9af-d62866f3f0b2",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}?",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}"
+					],
+					"query": [
+						{
+							"key": "searchString",
+							"value": "112-2",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Список прививок пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d86149c-4262-4c5e-aa09-fb06c5af0a2e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"let response = JSON.parse(responseBody);",
+							"",
+							"if (response.length > 0) {",
+							"    pm.environment.set(\"vaccineId\", response[0].id);",
+							"}",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}/vaccine",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}",
+						"vaccine"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Конкретная прививка пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "4d86149c-4262-4c5e-aa09-fb06c5af0a2e",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}/vaccine/{{vaccineId}}",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}",
+						"vaccine",
+						"{{vaccineId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Добавление прививки пациенту",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "482a39d3-d620-436b-8586-98986dd38329",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"let response = JSON.parse(responseBody);",
+							"pm.environment.set(\"vaccineId\", response.id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"medication\": \"Вианвак\",\n    \"agreement\": true,\n    \"date\": \"2017-05-08T00:00:00\",\n    \"patientId\": {{patientId}},\n}"
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}/vaccine/",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}",
+						"vaccine",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Редактирование прививки пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "482a39d3-d620-436b-8586-98986dd38329",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"medication\": \"Вианвак\",\n    \"agreement\": true,\n    \"date\": \"2014-05-08T00:00:00\",\n    \"patientId\": {{patientId}},\n    \"Id\": {{vaccineId}}\n}"
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}/vaccine/{{vaccineId}}",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}",
+						"vaccine",
+						"{{vaccineId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Удаление прививки пациента",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "482a39d3-d620-436b-8586-98986dd38329",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{vcn_host}}/api/patient/{{patientId}}/vaccine/{{vaccineId}}",
+					"host": [
+						"{{vcn_host}}"
+					],
+					"path": [
+						"api",
+						"patient",
+						"{{patientId}}",
+						"vaccine",
+						"{{vaccineId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
