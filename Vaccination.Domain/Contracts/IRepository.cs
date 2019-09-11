@@ -9,11 +9,11 @@ namespace Vaccination.Domain.Contracts
 {
     public interface IRepository<TDomain>
     {
-        Task<IEnumerable<TDomain>> GetAllAsync();
+        Task<IEnumerable<TDomain>> GetAllAsync(params Expression<Func<TDomain, object>>[] includeProperties);
 
-        Task<IEnumerable<TDomain>> GetAllAsync(Expression<Func<TDomain, bool>> predicate);
+        Task<IEnumerable<TDomain>> GetAllAsync(Expression<Func<TDomain, bool>> predicate, params Expression<Func<TDomain, object>>[] includeProperties);
 
-        Task<TDomain> GetAsync(Expression<Func<TDomain, bool>> predicate);
+        Task<TDomain> GetAsync(Expression<Func<TDomain, bool>> predicate, params Expression<Func<TDomain, object>>[] includeProperties);
 
         Task<TDomain> DeleteAsync(TDomain domain);
 

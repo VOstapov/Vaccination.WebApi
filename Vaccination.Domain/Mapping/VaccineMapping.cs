@@ -12,7 +12,9 @@ namespace Vaccination.Domain.Mapping
         public VaccineMapping()
         {
             CreateMap<Vaccine, VaccineDto>();
-            CreateMap<VaccineDto, Vaccine>();
+            CreateMap<VaccineDto, Vaccine>()
+                .ForMember(dest => dest.Medication,
+                    opt => opt.Ignore());
         }
     }
 }

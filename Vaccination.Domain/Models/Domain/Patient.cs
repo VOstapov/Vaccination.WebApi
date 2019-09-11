@@ -10,7 +10,8 @@ namespace Vaccination.Domain.Models.Domain
         public string Name { get; set; }
         public string Patronomic { get; set; }
         public DateTime Birthday { get; set; }
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
+        public int GenderId { get; set; }
         public string Snils { get; set; }
 
         public virtual IEnumerable<Vaccine> Vaccines { get; set; }

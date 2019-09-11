@@ -20,8 +20,10 @@ namespace Vaccination.DataAccess.EF.Configuration
             builder.Property(x => x.Soname).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Patronomic).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Birthday).IsRequired();
-            builder.Property(x => x.Gender).IsRequired().HasMaxLength(50);
+            builder.Property(x => x.GenderId).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Snils).IsRequired().HasMaxLength(50);
+
+            builder.HasOne(x => x.Gender).WithMany(x => x.Patients).HasForeignKey(x => x.GenderId);
 
             builder.HasData(
                 new Patient[]
@@ -32,7 +34,7 @@ namespace Vaccination.DataAccess.EF.Configuration
                         Name = "Борис",
                         Soname = "Ганичев",
                         Patronomic = "Петрович",
-                        Gender = "Мужской",
+                        GenderId = 1,
                         Birthday = new DateTime(1985,1,5),
                         Snils = "112-233-445 95"
                     }

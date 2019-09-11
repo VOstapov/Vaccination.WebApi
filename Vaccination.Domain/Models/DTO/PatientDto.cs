@@ -25,8 +25,7 @@ namespace Vaccination.Domain.Models.DTO
         public DateTime Birthday { get; set; }
 
         [Required]
-        [GenderValidation]
-        public string Gender { get; set; }
+        public GenderDto Gender { get; set; }
 
         [Required]
         [SnilsValidation]

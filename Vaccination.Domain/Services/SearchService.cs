@@ -24,7 +24,7 @@ namespace Vaccination.Domain.Services
         {
             if (string.IsNullOrEmpty(searchString) || string.IsNullOrEmpty(searchString.Trim()))
             {
-                return await service.GetAllAsync().ConfigureAwait(false);
+                return await service.GetAllAsync(x => x.Gender).ConfigureAwait(false);
             }
 
             var splitted = searchString.Trim().Split(" ");
@@ -35,7 +35,8 @@ namespace Vaccination.Domain.Services
                     .Any(a => x.Patronomic.Contains(a, StringComparison.InvariantCultureIgnoreCase)
                         || x.Name.Contains(a, StringComparison.InvariantCultureIgnoreCase)
                         || x.Soname.Contains(a, StringComparison.InvariantCultureIgnoreCase)
-                        || x.Snils.Contains(a, StringComparison.InvariantCultureIgnoreCase)));
+                        || x.Snils.Contains(a, StringComparison.InvariantCultureIgnoreCase)),
+                    x => x.Gender);
         }
     }
 }

@@ -18,7 +18,9 @@ namespace Vaccination.DataAccess.EF
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new GenderConfiguration());
             modelBuilder.ApplyConfiguration(new PatientConfiguration());
+            modelBuilder.ApplyConfiguration(new MedicationConfiguration());
             modelBuilder.ApplyConfiguration(new VaccineConfiguration());
         }
     }

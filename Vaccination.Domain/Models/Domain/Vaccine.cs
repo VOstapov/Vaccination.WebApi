@@ -6,7 +6,9 @@ namespace Vaccination.Domain.Models.Domain
 {
     public class Vaccine : BaseModel
     {
-        public string Medication { get; set; }
+        public Medication Medication { get; set; }
+
+        public int MedicationId { get; set; }
 
         public bool Agreement { get; set; }
 

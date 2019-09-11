@@ -47,23 +47,27 @@ namespace Vaccination.Domain.Services
             return mapper.Map<TDto>(domain);
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync()
+        public async Task<IEnumerable<TDto>> GetAllAsync(params Expression<Func<TDto, object>>[] includeProperties)
         {
-            var domain = await repository.GetAllAsync().ConfigureAwait(false);
+            var domain = await repository.GetAllAsync(MapIncludeProperties(includeProperties)).ConfigureAwait(false);
             return mapper.Map<IEnumerable<TDto>>(domain);
         }
 
-        public async Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TDto, bool>> predicate)
+        public async Task<IEnumerable<TDto>> GetAllAsync(
+            Expression<Func<TDto, bool>> predicate,
+            params Expression<Func<TDto, object>>[] includeProperties)
         {
             var expr = mapper.Map<Expression<Func<TDomain, bool>>>(predicate);
-            var domain = await repository.GetAllAsync(expr).ConfigureAwait(false);
+            var domain = await repository.GetAllAsync(expr, MapIncludeProperties(includeProperties)).ConfigureAwait(false);
             return mapper.Map<IEnumerable<TDto>>(domain);
         }
 
-        public async Task<TDto> GetAsync(Expression<Func<TDto, bool>> predicate)
+        public async Task<TDto> GetAsync(
+            Expression<Func<TDto, bool>> predicate,
+            params Expression<Func<TDto, object>>[] includeProperties)
         {
             var expr = mapper.Map<Expression<Func<TDomain, bool>>>(predicate);
-            var domain = await repository.GetAsync(expr).ConfigureAwait(false);
+            var domain = await repository.GetAsync(expr, MapIncludeProperties(includeProperties)).ConfigureAwait(false);
 
             return mapper.Map<TDto>(domain);
         }
@@ -80,6 +84,18 @@ namespace Vaccination.Domain.Services
                 await unitOfWork.SaveAsync().ConfigureAwait(false);
             }
             return mapper.Map<TDto>(domain);
+        }
+
+        private Expression<Func<TDomain, object>>[] MapIncludeProperties(
+            params Expression<Func<TDto, object>>[] includeProperties)
+        {
+            Expression<Func<TDomain, object>>[] targetProperties = Enumerable.Empty<Expression<Func<TDomain, object>>>().ToArray();
+            if (includeProperties.Any())
+            {
+                targetProperties = includeProperties.Select(x => mapper.Map<Expression<Func<TDomain, object>>>(x)).ToArray();
+            }
+
+            return targetProperties;
         }
     }
 }

@@ -9,7 +9,9 @@ namespace Vaccination.Domain.Mapping
         public PatientMapping()
         {
             CreateMap<Patient, PatientDto>();
-            CreateMap<PatientDto, Patient>();
+            CreateMap<PatientDto, Patient>()
+                .ForMember(dest => dest.Gender,
+                    opt => opt.Ignore());
         }
     }
 }

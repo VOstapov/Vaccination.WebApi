@@ -50,7 +50,9 @@ namespace Vaccination.WebApi
             new Type[]
             {
                 typeof(PatientMapping),
-                typeof(VaccineMapping)
+                typeof(VaccineMapping),
+                typeof(MedicationMapping),
+                typeof(GenderMapping)
             },
             ServiceLifetime.Singleton);
 

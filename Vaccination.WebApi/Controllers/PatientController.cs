@@ -40,7 +40,7 @@ namespace Vaccination.WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult> Get(int id)
         {
-            var res = await patientService.GetAsync(x => x.Id == id);
+            var res = await patientService.GetAsync(x => x.Id == id, x => x.Gender);
             return CheckForNullAndReturnOkOrNotFound(res);
         }
 
@@ -69,14 +69,16 @@ namespace Vaccination.WebApi.Controllers
         [HttpGet("{patientId}/vaccine")]
         public async Task<ActionResult> GetVaccines(int patientId)
         {
-            var res = await vaccineService.GetAllAsync(x => x.PatientId == patientId);
+            var res = await vaccineService.GetAllAsync(x => x.PatientId == patientId, x => x.Medication);
             return Ok(res);
         }
 
         [HttpGet("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> GetVaccine(int patientId, int vaccineId)
         {
-            var res = await vaccineService.GetAsync(x => x.PatientId == patientId && x.Id == vaccineId);
+            var res = await vaccineService.GetAsync(
+                x => x.PatientId == patientId && x.Id == vaccineId,
+                x => x.Medication);
             return CheckForNullAndReturnOkOrNotFound(res);
         }
 

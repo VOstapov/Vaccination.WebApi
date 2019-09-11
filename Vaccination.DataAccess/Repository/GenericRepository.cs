@@ -32,19 +32,33 @@ namespace Vaccination.DataAccess.Repository
             return Task.FromResult(domain);
         }
 
-        public async Task<IEnumerable<TDomain>> GetAllAsync()
+        public async Task<IEnumerable<TDomain>> GetAllAsync(params Expression<Func<TDomain, object>>[] includeProperties)
         {
-            return await dbSet.AsNoTracking().ToListAsync().ConfigureAwait(false);
+            return await includeProperties
+                .Aggregate(dbSet.AsNoTracking(), (current, includeProperty) => current.Include(includeProperty))
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<TDomain>> GetAllAsync(Expression<Func<TDomain, bool>> predicate)
+        public async Task<IEnumerable<TDomain>> GetAllAsync(
+            Expression<Func<TDomain, bool>> predicate,
+            params Expression<Func<TDomain, object>>[] includeProperties)
         {
-            return await dbSet.AsNoTracking().Where(predicate).ToListAsync().ConfigureAwait(false);
+            return await includeProperties
+                .Aggregate(dbSet.AsNoTracking(), (current, includeProperty) => current.Include(includeProperty))
+                .Where(predicate)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
-        public async Task<TDomain> GetAsync(Expression<Func<TDomain, bool>> predicate)
+        public async Task<TDomain> GetAsync(
+            Expression<Func<TDomain, bool>> predicate,
+            params Expression<Func<TDomain, object>>[] includeProperties)
         {
-            return await dbSet.AsNoTracking().FirstOrDefaultAsync(predicate).ConfigureAwait(false);
+            return await includeProperties
+                .Aggregate(dbSet.AsNoTracking(), (current, includeProperty) => current.Include(includeProperty))
+                .FirstOrDefaultAsync(predicate)
+                .ConfigureAwait(false);
         }
 
         public Task<TDomain> UpdateAsync(TDomain domain)

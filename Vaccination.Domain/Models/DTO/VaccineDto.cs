@@ -9,8 +9,7 @@ namespace Vaccination.Domain.Models.DTO
     public class VaccineDto : BaseModel
     {
         [Required]
-        [StringLength(200)]
-        public string Medication { get; set; }
+        public MedicationDto Medication { get; set; }
 
         [Required]
         [Range(typeof(bool), "true", "true", ErrorMessage = "Agreement required true.")]

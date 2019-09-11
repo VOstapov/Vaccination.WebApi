@@ -9,11 +9,11 @@ namespace Vaccination.Domain.Contracts
 {
     public interface IService<TDto>
     {
-        Task<IEnumerable<TDto>> GetAllAsync();
+        Task<IEnumerable<TDto>> GetAllAsync(params Expression<Func<TDto, object>>[] includeProperties);
 
-        Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TDto, bool>> predicate);
+        Task<IEnumerable<TDto>> GetAllAsync(Expression<Func<TDto, bool>> predicate, params Expression<Func<TDto, object>>[] includeProperties);
 
-        Task<TDto> GetAsync(Expression<Func<TDto, bool>> predicate);
+        Task<TDto> GetAsync(Expression<Func<TDto, bool>> predicate, params Expression<Func<TDto, object>>[] includeProperties);
 
         Task<TDto> AddAsync(TDto dto);
 

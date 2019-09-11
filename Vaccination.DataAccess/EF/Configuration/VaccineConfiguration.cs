@@ -16,12 +16,13 @@ namespace Vaccination.DataAccess.EF.Configuration
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).ValueGeneratedOnAdd();
 
-            builder.Property(x => x.Medication).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Agreement).IsRequired();
             builder.Property(x => x.Date).IsRequired();
             builder.Property(x => x.PatientId).IsRequired();
+            builder.Property(x => x.MedicationId).IsRequired();
 
             builder.HasOne(x => x.Patient).WithMany(x => x.Vaccines).HasForeignKey(x => x.PatientId);
+            builder.HasOne(x => x.Medication).WithMany(x => x.Vaccines).HasForeignKey(x => x.MedicationId);
 
             builder.HasData(
                 new Vaccine[]
@@ -30,7 +31,7 @@ namespace Vaccination.DataAccess.EF.Configuration
                     {
                         Id = 1,
                         PatientId = 1,
-                        Medication = "Вианвак",
+                        MedicationId = 1,
                         Date = new DateTime(2019, 05, 08),
                         Agreement = true
                     }
