@@ -54,6 +54,7 @@ namespace Vaccination.WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] PatientDto patient)
         {
+            patient.Id = id;
             var res = await patientService.UpdateAsync(patient, x => x.Id == id);
             return CheckForNullAndReturnOkOrNotFound(res);
         }
@@ -90,6 +91,10 @@ namespace Vaccination.WebApi.Controllers
         [HttpPut("{patientId}/vaccine/{vaccineId}")]
         public async Task<ActionResult> Put(int patientId, int vaccineId, [FromBody] VaccineDto vaccine)
         {
+            // Вдруг забудут =)
+            vaccine.Id = vaccineId;
+            vaccine.PatientId = patientId;
+
             var res = await vaccineService.UpdateAsync(
                 vaccine,
                 x => x.Id == vaccine.Id && x.PatientId == vaccine.PatientId);
