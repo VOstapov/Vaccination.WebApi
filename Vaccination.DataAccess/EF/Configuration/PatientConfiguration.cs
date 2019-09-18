@@ -18,7 +18,7 @@ namespace Vaccination.DataAccess.EF.Configuration
 
             builder.Property(x => x.Name).IsRequired().HasMaxLength(200);
             builder.Property(x => x.Soname).IsRequired().HasMaxLength(200);
-            builder.Property(x => x.Patronomic).IsRequired().HasMaxLength(200);
+            builder.Property(x => x.Patronomic).HasMaxLength(200);
             builder.Property(x => x.Birthday).IsRequired();
             builder.Property(x => x.GenderId).IsRequired().HasMaxLength(50);
             builder.Property(x => x.Snils).IsRequired().HasMaxLength(50);
